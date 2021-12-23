@@ -11,7 +11,9 @@ window.onload = function(){
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( innerWidth, innerHeight );
     renderer.setSize( window.innerWidth, window.innerHeight );
-    bsp = new Bsp(2);
+    bsp = new Bsp(1);
+    camera.position.set(227, 160, 420);
+    camera.lookAt(227,10,300);
     animate();
 }
 

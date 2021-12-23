@@ -3,7 +3,7 @@ import {camera, controls, player, renderer} from "../../globals.js";
 
 const
     _NORMAL_SPEED = 900,
-    _SPRINT_SPEED = 1500,
+    _SPRINT_SPEED = 2200,
     _NORMAL_FOV = camera.fov,
     _SPRINT_FOV = camera.fov + 10,
     _velocity = new THREE.Vector3(),
@@ -15,7 +15,7 @@ let
     _moveLeft = false,
     _moveRight = false,
     _canJump = false,
-    _flyEnabled = false,
+    _flyEnabled = true,
     _moveDown = false,
     _speedForward = _NORMAL_SPEED,
     _speedRight = _NORMAL_SPEED,
@@ -76,6 +76,10 @@ const _onKeyDown = function ( event ) {
 
         case 'F2':
             _flyEnabled = !_flyEnabled;
+            break;
+
+        case 'F3':
+            console.log(camera.position);
             break;
     }
 
