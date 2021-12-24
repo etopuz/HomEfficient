@@ -6,13 +6,12 @@ import {Bsp} from "./src/map/Bsp.js";
 let bsp;
 
 window.onload = function(){
-
     scene.add( controls.getObject() );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( innerWidth, innerHeight );
     renderer.setSize( window.innerWidth, window.innerHeight );
-    bsp = new Bsp(1);
-    camera.position.set(227, 160, 420);
+    bsp = new Bsp(2);
+    camera.position.set(0, player.height, 0);
     camera.lookAt(227,10,300);
     animate();
 }
@@ -20,6 +19,7 @@ window.onload = function(){
 
 
 function animate() {
+
 
     if(controls.isLocked){
         cameraController();

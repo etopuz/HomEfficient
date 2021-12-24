@@ -4,7 +4,7 @@ import {_Node} from "./_Node.js";
 import {chunkSize, minOffset, RoomType, DoorDirection, TileType} from "./mapGlobals.js";
 
 const
-    _tileEdge = 8,
+    _tileEdge = 2,
     _tileHeight = 1,
     _scaleIncreaseRate = 0.1,
 
@@ -18,7 +18,6 @@ export class Bsp{
     tiles = [];
     tilePositions = [];
     leaveNodes = [];
-
 
     constructor(split) {
         this.isAnimationStopped = true;
@@ -117,7 +116,7 @@ export class Bsp{
         for(let i = 0; i<this.tiles.length;i++){    // TODO: animation
             let innerLength = this.tiles[i].length;
             for(let j = 0; j<innerLength; j++){
-                if(this.tiles[i][j].material.color.equals(materials["black"].color)){
+                if(this.tiles[i][j].material.color.equals(materials["red"].color)){
                     this.tiles[i][j].scale.y += _scaleIncreaseRate;
                     this.tiles[i][j].position.y += _scaleIncreaseRate/2;
                     if(this.tiles[i][j].position.y>=15)

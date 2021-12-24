@@ -4,8 +4,8 @@ import {PointerLockControls} from "./modules/PointerLockControls.js";
 export const
 
     player = {
-        height: 10,
-        speed: 40
+        height: 2.5,
+        speed: 15
     },
 
     materials = {

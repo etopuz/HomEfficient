@@ -3,7 +3,6 @@ import {chunkSize, minOffset} from "./mapGlobals.js";
 import {Room} from "./Room.js";
 
 export class _Node{
-    room;
 
     constructor(xStart, xEnd, zStart, zEnd) {
         this.isConnected = false;

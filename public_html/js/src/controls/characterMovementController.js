@@ -2,10 +2,10 @@ import * as THREE from "../../modules/three.module.js";
 import {camera, controls, player, renderer} from "../../globals.js";
 
 const
-    _NORMAL_SPEED = 900,
-    _SPRINT_SPEED = 2200,
+    _NORMAL_SPEED = 150,
+    _SPRINT_SPEED = 220,
     _NORMAL_FOV = camera.fov,
-    _SPRINT_FOV = camera.fov + 10,
+    _SPRINT_FOV = camera.fov + 6,
     _velocity = new THREE.Vector3(),
     _direction = new THREE.Vector3();
 
@@ -54,16 +54,16 @@ const _onKeyDown = function ( event ) {
 
         case 'Space':
             if ( _canJump === true)
-                _velocity.y += 350;
+                _velocity.y += 200;
 
             if (_flyEnabled)
-                _velocity.y = 1000;
+                _velocity.y = 400;
             _canJump = false;
             break;
 
         case 'ControlLeft':
             if(_flyEnabled){
-                _velocity.y = -800;
+                _velocity.y = -200;
                 _moveDown = true;
             }
             break;
@@ -130,7 +130,7 @@ export function cameraController(){
     const delta = ( time - _prevTime ) / 1000;
     _velocity.x -= _velocity.x * player.speed * delta;
     _velocity.z -= _velocity.z * player.speed * delta;
-    _velocity.y -= 9.8 * 150.0 * delta;
+    _velocity.y -= 9.8 * 80.0 * delta;
 
     if(_flyEnabled && _velocity.y<0 && !_moveDown){
         _velocity.y = 0;
