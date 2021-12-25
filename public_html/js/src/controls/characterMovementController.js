@@ -120,10 +120,6 @@ const _onKeyUp = function ( event ) {
     }
 };
 
-document.addEventListener( 'keydown', _onKeyDown );
-document.addEventListener( 'keyup', _onKeyUp );
-document.addEventListener( 'click', function () {controls.lock();} );
-window.addEventListener('resize', _onWindowResize, false)
 
 export function cameraController(){
     const time = performance.now();
@@ -157,6 +153,12 @@ export function cameraController(){
     }
     _prevTime = time;
 }
+
+
+document.addEventListener( 'keydown', _onKeyDown );
+document.addEventListener( 'keyup', _onKeyUp );
+document.addEventListener( 'click', function () {controls.lock();} );
+window.addEventListener('resize', _onWindowResize, false)
 
 
 

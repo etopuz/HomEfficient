@@ -4,7 +4,7 @@ import {PointerLockControls} from "./modules/PointerLockControls.js";
 export const
 
     player = {
-        height: 2.5,
+        height: 1.5,
         speed: 15
     },
 
@@ -24,7 +24,7 @@ export const
 export let
     scene = new THREE.Scene(),
     renderer = new THREE.WebGLRenderer(),
-    camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.3, 1000 );
+    camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.3, 300);
 
 
 document.body.appendChild(renderer.domElement);

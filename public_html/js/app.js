@@ -1,7 +1,7 @@
-import * as THREE from './modules/three.module.js';
-import {player, scene, renderer, camera, controls} from './globals.js'
+import {scene, renderer, camera, controls} from './globals.js'
 import {cameraController} from "./src/controls/characterMovementController.js";
 import {Bsp} from "./src/map/Bsp.js";
+import {bspAnim} from "./src/map/BspAnimation.js";
 
 let bsp;
 
@@ -11,27 +11,23 @@ window.onload = function(){
     renderer.setSize( innerWidth, innerHeight );
     renderer.setSize( window.innerWidth, window.innerHeight );
     bsp = new Bsp(2);
-    camera.position.set(0, player.height, 0);
-    camera.lookAt(227,10,300);
+    camera.position.set(42, 200, 82);
+    camera.lookAt(40,10,40);
+
     animate();
 }
 
-
-
 function animate() {
 
-
-    if(controls.isLocked){
+    if(controls.isLocked && window.document.hasFocus()){
         cameraController();
     }
 
     if(!bsp.isAnimationStopped){
-        bsp.bspAnim();
+        bspAnim(bsp);
     }
 
     renderer.render( scene, camera );
     requestAnimationFrame( animate );
 }
-
-
 

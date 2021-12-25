@@ -5,6 +5,16 @@ export const
     chunkSize = 14,  // every leaf will be 12x12 tiles
     minOffset = 2,
 
+    NodeType = {
+        Root: "Root",
+        Left: "Left",
+        Right: "Right",
+        UpLeft: "UpLeft",
+        UpRight: "UpRight",
+        DownLeft: "DownLeft",
+        DownRight: "DownRight"
+    },
+
     DoorDirection = {
         Up: "Up",
         Down: "Down",
@@ -14,9 +24,11 @@ export const
 
     TileType = {
         Wall: "Wall",
-        Door: "Door",
+        RoomWall: "RoomWall",
         Room: "Room",
-        Corridor: "Corridor"
+        Door: "Door",
+        PossiblePath: "PossiblePath",
+        Path: "Path"
     },
 
     RoomType = {
