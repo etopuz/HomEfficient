@@ -21,6 +21,7 @@ export class Bsp{
     tiles = [];
     tilePositions = [];
     leaveNodes = [];
+
     constructor(split) {
         this.isAnimationStopped = true;
         this.split = split;
@@ -32,7 +33,7 @@ export class Bsp{
     generateAll(){          // TODO: will run after get input
         this.createGrid();
         this.createBsp(this.root, 0, _splitType.vertical);
-        this.setPossibleWays(this.root);
+        this.setPossibleWays(this.root, 0);
         this.createRooms(this.root);
         if (this.split !== 0){
             this.createWays(this.root);
@@ -50,11 +51,9 @@ export class Bsp{
 
                 let tilePosition = {
                     x: x * _tileEdge,
-                    z: z * _tileEdge
+                    z: z * _tileEdge,
+                    y: 0
                 }
-
-                tile.position.x = x * _tileEdge ;
-                tile.position.z = z * _tileEdge ;
 
                 // delete function below
                 debugTile(tile);
@@ -85,7 +84,7 @@ export class Bsp{
         }
     }
 
-    setPossibleWays(node){
+    setPossibleWays(node, height){
 
         if (node == null)
             return;
@@ -93,6 +92,11 @@ export class Bsp{
         if(node.isLeaf()){
             for(let x = node.startX; x < node.endX; x++){
                 for(let z = node.startZ; z < node.endZ; z++){
+
+                  this.tiles[x][z].position.x = (node.startX+node.endX) / 2 * _tileEdge ;
+                    this.tiles[x][z].position.z = (node.startZ+node.endZ) / 2 * _tileEdge ;
+                    this.tiles[x][z].position.y = -40;
+
                     if(x<node.startX+minOffset || z<node.startZ+minOffset || x>node.endX-(1+minOffset) || z>node.endZ-(1+minOffset)){
                         this.tiles[x][z].material = materials.white;
                         this.tiles[x][z].name = TileType.PossiblePath;
@@ -108,10 +112,10 @@ export class Bsp{
             node.id = this.leaveNodes.length;
         }
 
-        this.setPossibleWays(node.left);
+        node.height = height++;
 
-        this.setPossibleWays(node.right);
-
+        this.setPossibleWays(node.left, height);
+        this.setPossibleWays(node.right, height);
     }
 
     createRooms(node){
@@ -131,10 +135,12 @@ export class Bsp{
 
             for(let x = room.startX; x < room.endX; x++){
                 for(let z = room.startZ; z < room.endZ; z++) {
+
                     if (x === room.startX ||x === room.endX-1 || z === room.startZ ||z === room.endZ-1){
-                        this.tiles[x][z].material = materials.black;
+                        this.tiles[x][z].material = materials.grey;
                         this.tiles[x][z].name = TileType.RoomWall;
                     }
+
                     else{
                         this.tiles[x][z].material = roomType.material;
                         this.tiles[x][z].name = TileType.Room;
@@ -223,22 +229,20 @@ export class Bsp{
         }
     }
 
-
-
     // |pathStartX|pathStartX+1|....|numberOfStep| --> set all tiles as path
     // if minus go left
     setPathRight(pathStartX, pathStartZ, numberOfStep){
         let lastX;
         if(numberOfStep<0){
             for(let x = 0; x >= numberOfStep; x--){
-                this.tiles[pathStartX+x][pathStartZ].material = materials.cyan;
+                /*this.tiles[pathStartX+x][pathStartZ].material = materials.cyan;*/
                 this.tiles[pathStartX+x][pathStartZ].name = TileType.Path;
                 lastX = pathStartX+x;
             }
         }
         else{
             for(let x = 0; x <= numberOfStep; x++){
-                this.tiles[pathStartX+x][pathStartZ].material = materials.cyan;
+                /*this.tiles[pathStartX+x][pathStartZ].material = materials.cyan;*/
                 this.tiles[pathStartX+x][pathStartZ].name = TileType.Path;
                 lastX = pathStartX+x;
             }
@@ -250,14 +254,14 @@ export class Bsp{
         let lastZ;
         if(numberOfStep<0){
             for(let z = 0; z >= numberOfStep; z--){
-                this.tiles[pathStartX][pathStartZ+z].material = materials.cyan;
+                /*this.tiles[pathStartX][pathStartZ+z].material = materials.cyan;*/
                 this.tiles[pathStartX][pathStartZ+z].name = TileType.Path;
                 lastZ = pathStartZ+z;
             }
         }
         else{
             for(let z = 0; z <= numberOfStep; z++){
-                this.tiles[pathStartX][pathStartZ+z].material = materials.cyan;
+                /*this.tiles[pathStartX][pathStartZ+z].material = materials.cyan;*/
                 this.tiles[pathStartX][pathStartZ+z].name = TileType.Path;
                 lastZ = pathStartZ+z;
             }

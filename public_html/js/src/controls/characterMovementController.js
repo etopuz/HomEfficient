@@ -86,7 +86,6 @@ const _onKeyDown = function ( event ) {
 };
 
 const _onKeyUp = function ( event ) {
-    console.log(event.code);
     switch ( event.code ) {
         case 'ArrowUp':
         case 'KeyW':
@@ -158,10 +157,15 @@ export function cameraController(){
 document.addEventListener( 'keydown', _onKeyDown );
 document.addEventListener( 'keyup', _onKeyUp );
 document.addEventListener( 'click', function () {controls.lock();} );
-window.addEventListener('resize', _onWindowResize, false)
+window.addEventListener('resize', _onWindowResize, false);
 
-
-
-
+function logAll(){
+    console.log("px:" , controls.getObject().position.x);
+    console.log("pz:" , controls.getObject().position.z);
+    console.log("dx:" , _direction.x);
+    console.log("dz:" , _direction.z);
+    console.log("vx:" , _velocity.x);
+    console.log("vz:" , _velocity.z);
+}
 
 
