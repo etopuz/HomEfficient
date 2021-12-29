@@ -56,7 +56,7 @@ export class Bsp{
                 }
 
                 // delete function below
-                debugTile(tile);
+                //debugTile(tile);
 
                 this.tilePositions.push(tilePosition);
                 tilesInAxisZ.push(tile);
