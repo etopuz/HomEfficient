@@ -24,7 +24,7 @@ export class Room{
 
                 break;
             case DoorDirection.Down:
-                this.doorPosX = this.endX-3;
+                this.doorPosX = this.endX-2;
                 this.doorPosY = this.endZ-1;
                 break;
 

@@ -129,7 +129,7 @@ class PointerLockControls extends EventDispatcher {
 
             _vector.crossVectors( camera.up, _vector );
 
-            camera.position.addScaledVector( _vector, distance );
+            return new Vector3(0,0,0).addScaledVector( _vector, distance );
 
         };
 
@@ -137,7 +137,7 @@ class PointerLockControls extends EventDispatcher {
 
             _vector.setFromMatrixColumn( camera.matrix, 0 );
 
-            camera.position.addScaledVector( _vector, distance );
+            return new Vector3(0,0,0).addScaledVector( _vector, distance );
 
         };
 

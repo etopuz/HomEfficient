@@ -1,5 +1,10 @@
 import * as THREE from "../../modules/three.module.js";
-import {camera, controls, player, renderer} from "../../globals.js";
+import {camera, character, controls, player, renderer} from "../../globals.js";
+
+export let
+    moveLeftVector = new THREE.Vector3(),
+    moveForwardVector = new THREE.Vector3(),
+    godMode = true;
 
 const
     _NORMAL_SPEED = 150,
@@ -15,13 +20,11 @@ let
     _moveLeft = false,
     _moveRight = false,
     _canJump = false,
-    _flyEnabled = true,
+
     _moveDown = false,
     _speedForward = _NORMAL_SPEED,
     _speedRight = _NORMAL_SPEED,
     _prevTime = performance.now();
-
-
 
 
 const _onWindowResize = function() {
@@ -56,13 +59,13 @@ const _onKeyDown = function ( event ) {
             if ( _canJump === true)
                 _velocity.y += 200;
 
-            if (_flyEnabled)
+            if (godMode)
                 _velocity.y = 400;
             _canJump = false;
             break;
 
         case 'ControlLeft':
-            if(_flyEnabled){
+            if(godMode){
                 _velocity.y = -200;
                 _moveDown = true;
             }
@@ -75,7 +78,7 @@ const _onKeyDown = function ( event ) {
             break;
 
         case 'F2':
-            _flyEnabled = !_flyEnabled;
+            godMode = !godMode;
             break;
 
         case 'F3':
@@ -127,7 +130,7 @@ export function cameraController(){
     _velocity.z -= _velocity.z * player.speed * delta;
     _velocity.y -= 9.8 * 80.0 * delta;
 
-    if(_flyEnabled && _velocity.y<0 && !_moveDown){
+    if(godMode && _velocity.y<0 && !_moveDown){
         _velocity.y = 0;
     }
 
@@ -138,18 +141,28 @@ export function cameraController(){
     if ( _moveForward || _moveBackward ) _velocity.z -= _direction.z * _speedForward * delta;
     if ( _moveLeft || _moveRight ) _velocity.x -= _direction.x * _speedRight * delta;
 
-    controls.moveRight( - _velocity.x * delta );
-    controls.moveForward( - _velocity.z * delta );
+    moveLeftVector = controls.moveRight( - _velocity.x /2);
+    moveForwardVector = controls.moveForward( - _velocity.z);
 
-    controls.getObject().position.y += ( _velocity.y * delta )/5; // new behavior
+    controls.getObject().position.y += ( _velocity.y * delta ) / 5; // new behavior
 
-    if ( controls.getObject().position.y < player.height && !_flyEnabled) {
+    if ( controls.getObject().position.y < player.height && !godMode) {
 
         _velocity.y = 0;
         controls.getObject().position.y = player.height;
         _canJump = true;
 
     }
+
+    if(!godMode){
+        setCharacterPosition();
+    }
+
+    else{
+        camera.position.x += (moveForwardVector.x + moveLeftVector.x) * delta * 5;
+        camera.position.z += (moveForwardVector.z + moveLeftVector.z) * delta * 5;
+    }
+
     _prevTime = time;
 }
 
@@ -158,6 +171,16 @@ document.addEventListener( 'keydown', _onKeyDown );
 document.addEventListener( 'keyup', _onKeyUp );
 document.addEventListener( 'click', function () {controls.lock();} );
 window.addEventListener('resize', _onWindowResize, false);
+
+function setCharacterPosition(){
+    camera.position.x = character.position.x;
+    camera.position.y = character.position.y;
+    camera.position.z = character.position.z;
+}
+
+export function setGodMode(bool){
+    godMode = bool;
+}
 
 function logAll(){
     console.log("px:" , controls.getObject().position.x);

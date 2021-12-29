@@ -28,7 +28,8 @@ export const
         Room: "Room",
         Door: "Door",
         PossiblePath: "PossiblePath",
-        Path: "Path"
+        Path: "Path",
+        Removed: "Removed"
     },
 
     RoomType = {
