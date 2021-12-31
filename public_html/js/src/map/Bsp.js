@@ -58,8 +58,8 @@ export class Bsp{
         this.isAnimationStopped = false;
     }
     createObject(rotation_x,position_x, position_y, position_z){
-        console.log("Mehmet")
-        const lamp = new GLTFLoader().setPath( '../public_html/js/modules/gltf/' );
+        console.log(window.location.pathname);
+        const lamp = new GLTFLoader().setPath( 'js/modules/gltf/' );
 //const tv= new GLTFLoader().setPath( '../public_html/js/modules/gltf/tv/')
         lamp.load( 'scene.gltf', function ( gltf ) {
             console.log(gltf)
