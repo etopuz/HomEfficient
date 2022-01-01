@@ -3,21 +3,6 @@ import {materials, randomProperty, scene} from "../../globals.js";
 import {_Node} from "./_Node.js";
 import {chunkSize, minOffset, RoomType, DoorDirection, TileType, NodeType} from "./mapGlobals.js";
 import {GLTFLoader} from "../../modules/GLTFLoader.js";
-/*tv.load('scene.gltf',function (gltf){
-    console.log(gltf)
-    const root1=gltf.scene;
-    root1.scale.set(0.005,0.005,0.005)
-    root1.rotation.x=Math.PI/0.5
-    root1.position.z=Math.PI/1
-    root1.position.x=Math.PI/0.35
-    root1.position.y=Math.PI/0.2
-    scene.add(root1);
-} , function(xhr){
-    console.log((xhr.loaded/xhr.total *100)+ "% loaded")
-} , function (error){
-    console.log("An error occured")
-});
-scene.add(light)*/
 
 const
     _tileEdge = 2,
@@ -50,35 +35,10 @@ export class Bsp{
         this.createBsp(this.root, 0, _splitType.vertical);
         this.setPossibleWays(this.root, 0);
         this.createRooms(this.root);
-        this.createObjectInRooms();
-        //this.createObject();
         if (this.split !== 0){
             this.createWays(this.root);
         }
         this.isAnimationStopped = false;
-    }
-    createObject(rotation_x,position_x, position_y, position_z){
-        console.log(window.location.pathname);
-        const lamp = new GLTFLoader().setPath( 'js/modules/gltf/' );
-//const tv= new GLTFLoader().setPath( '../public_html/js/modules/gltf/tv/')
-        lamp.load( 'scene.gltf', function ( gltf ) {
-            console.log(gltf)
-            const root=gltf.scene;
-            root.scale.set(0.07,0.07,0.07)
-            root.rotation.x=rotation_x//Math.PI/0.5
-            root.position.z=position_z//Math.PI/0.5
-            root.position.x=position_x//Math.PI/0.5
-            root.position.y=position_y//Math.PI/0.75
-            scene.add(root);
-        } , function(xhr){
-            console.log((xhr.loaded/xhr.total *100)+ "% loaded")
-        } , function (error){
-            console.log("An error occured")
-        });
-
-        const light= new THREE.DirectionalLight(0xffffff,1)
-        light.position.set(2,2,5)
-        scene.add(light)
     }
 
 
@@ -124,37 +84,7 @@ export class Bsp{
             }
         }
     }
-    /*createObjectInRooms(){
-        this.createObject();
-        let tiles=this.tiles;
-        let nodes=this.leaveNodes;
-        for(let i = 0; i< nodes.length; i++) {
-            console.log("dervis1");
-            let room = nodes[i].room;
-            let middleX = tiles[(room.endX - room.startX)/2][(room.endZ - room.startZ)/2];
-            let middleZ = tiles[(room.endX - room.startX)/2][(room.endZ - room.startZ)/2];
-            let ceil = 5;
-            console.log(middleX.position);
-            scene.add(this.createObject(middleX.position.x, ceil, middleZ.position.z));
-            console.log("dervis2");
 
-            this.createObject(middleX.position.x, ceil, middleZ.position.z);
-            console.log("dervis3");
-
-        }
-    }*/
-    createObjectInRooms(){
-        this.createObject();
-        let tiles=this.tiles;
-        let nodes=this.leaveNodes;
-        for(let i = 0; i< nodes.length; i++) {
-            let room = nodes[i].room;
-            let middleTile = tiles[Math.ceil((room.endX - room.startX)/2)][Math.ceil((room.endZ - room.startZ)/2)];
-            let ceil = 10;
-            //this.createObject(Math.PI/0.5,middleTile.position.x, ceil, middleTile.position.z);
-            this.createObject(Math.PI/0.5,i*9, ceil, i*9);
-        }
-    }
 
     setPossibleWays(node, height){
 

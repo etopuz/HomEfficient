@@ -25,7 +25,7 @@ export let
     scene = new THREE.Scene(),
     renderer = new THREE.WebGLRenderer({precision: "mediump", antialias: true }),
     camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 300),
-    character = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, player.height, 32), materials.white);
+    character = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.25, player.height, 32), materials.white);
 
 document.body.appendChild(renderer.domElement);
 scene.add(character);

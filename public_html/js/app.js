@@ -3,6 +3,7 @@ import {cameraController, setGodMode} from "./src/controls/characterMovementCont
 import {Bsp} from "./src/map/Bsp.js";
 import {animationController, isAnimationStopped} from "./src/map/BspAnimation.js";
 import {clock, isCollisionSet, setCollision, updatePhysics} from "./src/controls/collisionDetectionController.js";
+import {createObjectInRooms, isSceneLoaded} from "./src/game/loadObjectsOnScene.js";
 
 let bsp;
 let split = 2;  // increase this for more nodes
@@ -45,11 +46,15 @@ function game(){
     requestAnimationFrame(game);
     let deltaTime = clock.getDelta();
 
-    updatePhysics(deltaTime);
+
 
     if(controls.isLocked && window.document.hasFocus()){
         cameraController();
-        // move collisionBox and check collide
+        updatePhysics(deltaTime);
+    }
+
+    if(!isSceneLoaded){
+        createObjectInRooms(bsp);
     }
 
     time += deltaTime;
