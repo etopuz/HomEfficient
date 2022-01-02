@@ -1,6 +1,7 @@
 import {GLTFLoader} from "../../modules/GLTFLoader.js";
 import {scene} from "../../globals.js";
 import * as THREE from "../../modules/three.module.js";
+import {DoorDirection, RoomType} from "../map/mapGlobals.js ";
 
 export let isSceneLoaded = false;
 
@@ -14,24 +15,55 @@ export function createObjectInRooms(bsp){
         let middleTile = tiles[Math.floor((room.endX + room.startX)/2)][Math.floor((room.endZ + room.startZ)/2)];
         let ceil = 5;
         console.log (middleTile.position);
-        createObject(Math.PI/0.5, middleTile.position.x, ceil, middleTile.position.z);
+        createObject(0.07,'assets/gltf//lamp/',Math.PI/0.5, middleTile.position.x, ceil, middleTile.position.z);
     }
+    for(let i = 0; i< nodes.length; i++) {
+        let room = nodes[i].room;
+        console.error("room");
+        if(room.roomType===RoomType.LivingRoom) {
+            if(room.doorDirection===DoorDirection.Right){
+
+                let middleTile = tiles[Math.ceil((room.endX + room.startX)/2)-4][Math.ceil((room.endZ + room.startZ)/2)];
+                let ceil = 0;
+                console.log (middleTile.position);
+                createObject(0.007,'assets/gltf//tv/',Math.PI/0.5, middleTile.position.x, ceil, middleTile.position.z);
+            }
+                else if(room.doorDirection===DoorDirection.Left){
+                let middleTile = tiles[Math.ceil((room.endX + room.startX)/2)+4][Math.ceil((room.endZ + room.startZ)/2)];
+                let ceil = 0;
+                console.log (middleTile.position);
+                createObject(0.007,'assets/gltf//tv/',Math.PI/0.5, middleTile.position.x, ceil, middleTile.position.z);
+            }
+                else if(room.doorDirection===DoorDirection.Up){
+                let middleTile = tiles[Math.ceil((room.endX + room.startX)/2)+5][Math.ceil((room.endZ + room.startZ)/2)];
+                let ceil = 0;
+                console.log (middleTile.position);
+                createObject(0.007,'assets/gltf//tv/',Math.PI/0.5, middleTile.position.x, ceil, middleTile.position.z);
+            }
+                else if(room.doorDirection===DoorDirection.Down){
+                let middleTile = tiles[Math.ceil((room.endX + room.startX)/2)-5][Math.ceil((room.endZ + room.startZ)/2)];
+                let ceil = 0;
+                console.log (middleTile.position);
+                createObject(0.007,'assets/gltf//tv/',Math.PI/0.5, middleTile.position.x, ceil, middleTile.position.z);
+            }
+        }
+    }
+
 
     isSceneLoaded = true;
     // load screen maybe
 }
 
-function createObject(rotation_x,position_x, position_y, position_z){
+function createObject(scaleRatio,object,rotation_x,position_x, position_y, position_z){
     
     // webstormda onune "../../" getirmek gerekiyor
     // netbeansda gerek yok
-    
-    const lamp = new GLTFLoader().setPath( 'assets/gltf//lamp/' );
+    const lamp = new GLTFLoader().setPath( object );
     //const tv= new GLTFLoader().setPath( '../../assets/gltf/tv/')
     lamp.load( 'scene.gltf', function ( gltf ) {
         console.log(gltf);
         const root=gltf.scene;
-        root.scale.set(0.07,0.07,0.07);
+        root.scale.set(scaleRatio,scaleRatio,scaleRatio);
         root.rotation.x=rotation_x  //Math.PI/0.5
         root.position.z=position_z  //Math.PI/0.5
         root.position.x=position_x  //Math.PI/0.5
