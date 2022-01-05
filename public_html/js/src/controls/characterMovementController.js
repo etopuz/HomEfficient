@@ -4,15 +4,16 @@ import {camera, character, controls, player, renderer} from "../../globals.js";
 export let
     moveLeftVector = new THREE.Vector3(),
     moveForwardVector = new THREE.Vector3(),
-    godMode = true;
+    godMode = true,
+    direction = new THREE.Vector3();
 
 const
     _NORMAL_SPEED = 150,
     _SPRINT_SPEED = 220,
     _NORMAL_FOV = camera.fov,
     _SPRINT_FOV = camera.fov + 6,
-    _velocity = new THREE.Vector3(),
-    _direction = new THREE.Vector3();
+    _velocity = new THREE.Vector3();
+
 
 let
     _moveForward = false,
@@ -60,13 +61,13 @@ const _onKeyDown = function ( event ) {
                 _velocity.y += 200;
 
             if (godMode)
-                _velocity.y = 400;
+                _velocity.y = 200;
             _canJump = false;
             break;
 
         case 'ControlLeft':
             if(godMode){
-                _velocity.y = -200;
+                _velocity.y = -100;
                 _moveDown = true;
             }
             break;
@@ -84,7 +85,10 @@ const _onKeyDown = function ( event ) {
         case 'F3':
             console.log(camera.position);
             break;
+
     }
+
+
 
 };
 
@@ -134,12 +138,12 @@ export function cameraController(){
         _velocity.y = 0;
     }
 
-    _direction.z = Number( _moveForward ) - Number( _moveBackward );
-    _direction.x = Number( _moveRight ) - Number( _moveLeft );
-    _direction.normalize(); // this ensures consistent movements in all directions
+    direction.z = Number( _moveForward ) - Number( _moveBackward );
+    direction.x = Number( _moveRight ) - Number( _moveLeft );
+    direction.normalize(); // this ensures consistent movements in all directions
 
-    if ( _moveForward || _moveBackward ) _velocity.z -= _direction.z * _speedForward * delta;
-    if ( _moveLeft || _moveRight ) _velocity.x -= _direction.x * _speedRight * delta;
+    if ( _moveForward || _moveBackward ) _velocity.z -= direction.z * _speedForward * delta;
+    if ( _moveLeft || _moveRight ) _velocity.x -= direction.x * _speedRight * delta;
 
     moveLeftVector = controls.moveRight( - _velocity.x /2);
     moveForwardVector = controls.moveForward( - _velocity.z);
@@ -166,6 +170,15 @@ export function cameraController(){
     _prevTime = time;
 }
 
+export function setGodMode(bool){
+    godMode = bool;
+}
+
+export function stopMotion(){
+    moveLeftVector = new THREE.Vector3(0,0,0);
+    moveForwardVector = new THREE.Vector3(0,0,0);
+}
+
 
 document.addEventListener( 'keydown', _onKeyDown );
 document.addEventListener( 'keyup', _onKeyUp );
@@ -178,15 +191,12 @@ function setCharacterPosition(){
     camera.position.z = character.position.z;
 }
 
-export function setGodMode(bool){
-    godMode = bool;
-}
 
 function logAll(){
     console.log("px:" , controls.getObject().position.x);
     console.log("pz:" , controls.getObject().position.z);
-    console.log("dx:" , _direction.x);
-    console.log("dz:" , _direction.z);
+    console.log("dx:" , direction.x);
+    console.log("dz:" , direction.z);
     console.log("vx:" , _velocity.x);
     console.log("vz:" , _velocity.z);
 }

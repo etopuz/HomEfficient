@@ -18,7 +18,7 @@ let
     transformAux1 = new Ammo.btTransform();
 
 var mouseCoords = new THREE.Vector2();
-var raycaster = new THREE.Raycaster();
+
 var ballMaterial = new THREE.MeshPhongMaterial( { color: 0x202020 } );
 
 
@@ -138,39 +138,3 @@ export function updatePhysics(deltaTime) {
 }
 
 
-/*function initInput() {
-
-    window.addEventListener( 'mousedown', function( event ) {
-
-        mouseCoords.set(0,0);
-
-        raycaster.setFromCamera(mouseCoords, camera );
-
-        // Creates a ball and throws it
-        var ballMass = 35;
-        var ballRadius = 0.4;
-
-        var ball = new THREE.Mesh( new THREE.SphereGeometry( ballRadius, 14, 10 ), ballMaterial );
-        ball.castShadow = true;
-        ball.receiveShadow = true;
-        var ballShape = new Ammo.btSphereShape( ballRadius );
-        ballShape.setMargin( margin );
-        var pos = new THREE.Vector3();
-        var quat = new THREE.Quaternion();
-        pos.copy( raycaster.ray.direction );
-        pos.add( raycaster.ray.origin );
-        quat.set( 0, 0, 0, 1 );
-        var ballBody = createRigidBody( ball, ballShape, ballMass, pos, quat );
-
-        pos.copy( raycaster.ray.direction );
-        pos.multiplyScalar( 24 );
-        ballBody.setLinearVelocity( new Ammo.btVector3( pos.x, pos.y, pos.z ) );
-
-        const intersects = raycaster.intersectObjects( scene.children );
-        //intersects[0].object.material = materials.yellow;
-
-
-
-    }, false );
-
-}*/

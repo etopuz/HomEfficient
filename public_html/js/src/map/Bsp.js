@@ -47,6 +47,8 @@ export class Bsp{
             let tilesInAxisZ = [];
             for(let z = 0; z < this.numberOfTilesOnEdge; z++){
                 let tile = new THREE.Mesh(geometry, materials.white);
+                tile.castShadow = true;
+                tile.receiveShadow = true;
                 tile.name = TileType.Wall;
                 scene.add(tile);
 
@@ -150,7 +152,7 @@ export class Bsp{
                 }
             }
 
-            let doorTile = this.tiles[room.doorPosX][room.doorPosY];
+            let doorTile = this.tiles[room.doorPosX][room.doorPosZ];
             doorTile.material = roomType.material;
             doorTile.name = TileType.Door;
         }
@@ -177,7 +179,7 @@ export class Bsp{
 
         if(node.isLeaf()){
             let currentPathX = node.room.doorPosX;
-            let currentPathZ = node.room.doorPosY;
+            let currentPathZ = node.room.doorPosZ;
 
             switch (node.room.doorDirection){
                 case DoorDirection.Up:
