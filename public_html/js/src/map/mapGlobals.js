@@ -34,7 +34,7 @@ export const
 
     RoomType = {
         Bathroom : {
-            size : 6,
+            size : 5,
             material : materials.blue
         },
 
