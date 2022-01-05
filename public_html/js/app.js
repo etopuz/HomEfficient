@@ -1,9 +1,9 @@
-import {scene, renderer, camera, controls} from './globals.js'
+import {scene, renderer, camera, controls, mainLight} from './globals.js'
 import {cameraController, setGodMode} from "./src/controls/characterMovementController.js";
 import {Bsp} from "./src/map/Bsp.js";
 import {animationController, isAnimationStopped} from "./src/map/BspAnimation.js";
 import {clock, isCollisionSet, setCollision, updatePhysics} from "./src/controls/collisionDetectionController.js";
-import {createObjectInRooms, isSceneLoaded} from "./src/game/loadObjectsOnScene.js";
+import {setupScene, isSceneLoaded, isSceneLoadCalled} from "./src/game/loadObjectsOnScene.js";
 
 let bsp;
 let split = 2;  // increase this for more nodes
@@ -34,6 +34,7 @@ function animate() {
 
     if(isAnimationStopped && isCollisionSet){
         setGodMode(false);
+        scene.remove(mainLight);
         game();
     }
 
@@ -53,8 +54,8 @@ function game(){
         updatePhysics(deltaTime);
     }
 
-    if(!isSceneLoaded){
-        createObjectInRooms(bsp);
+    if(!isSceneLoadCalled){
+        setupScene(bsp);
     }
 
     time += deltaTime;
