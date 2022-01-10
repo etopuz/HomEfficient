@@ -1,11 +1,12 @@
-import {scene, renderer, camera, controls, mainLight, spotLight, character} from './globals.js'
+import {scene, renderer, camera, controls, spotLight, character} from './globals.js'
 import {cameraController, setGodMode, stopMotion} from "./src/controls/characterMovementController.js";
 import {Bsp} from "./src/map/Bsp.js";
 import {animationController, isAnimationStopped} from "./src/map/BspAnimation.js";
 import {clock, isCollisionSet, setCollision, updatePhysics} from "./src/controls/collisionDetectionController.js";
 import {rayCastInit} from "./src/controls/raycastController.js";
 import {setupScene, isSceneLoaded, isSceneLoadCalled} from "./src/game/loadObjectsOnScene.js";
-import {flashlightController} from "./src/game/lightManager.js";
+import {flashlightController, manageShadows} from "./src/game/lightManager.js";
+import {isShadersInitialized, initShaders, setTileProperties} from "./src/shaderManagement/shaderManager.js";
 
 let bsp;
 let split = 2;  // increase this for more nodes
@@ -20,8 +21,8 @@ window.onload = function(){
     setCamera();
 
     bsp = new Bsp(split);
-
     animationController(bsp, delay);
+    setTileProperties(bsp);
     animate();
 
 }
@@ -38,7 +39,6 @@ function animate() {
 
     if(isAnimationStopped && isCollisionSet){
         setGodMode(false);
-        // scene.remove(mainLight);
         game();
     }
 
@@ -54,7 +54,12 @@ function game(){
         setupScene(bsp);
     }
 
+    if(!isShadersInitialized){
+        initShaders();
+    }
+
     if(controls.isLocked && window.document.hasFocus()){
+        manageShadows(time);
         cameraController();
         updatePhysics(deltaTime);
         flashlightController();

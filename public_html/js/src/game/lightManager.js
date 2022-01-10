@@ -1,11 +1,12 @@
-import {scene, camera, mainLight, spotLight} from "../../globals.js";
+import {scene, camera, spotLight} from "../../globals.js";
 import * as THREE from "../../modules/three.module.js";
-import {direction} from "../controls/characterMovementController.js";
 
 export let
     lampLights = [],
     tvLights = [];
 
+let changeOpenedLights = true;
+let side = 1;
 
 const maxDistance = 200;
 const intensityIncreaseRate = 0.25;
@@ -14,7 +15,7 @@ scene.add(obj);
 
 
 export function turnOffLights(i){
-    scene.remove(lampLights[i]);
+    lampLights[i].intensity = 0;
 }
 
 function turnOffTv(i){
@@ -22,25 +23,30 @@ function turnOffTv(i){
 }
 
 
-export function detectNearestLights(){
+export function manageShadows(time){
 
-    if(lampLights.length < 4){
-        for(let i = 4; i<lampLights.length;i++){
-            lampLights.castShadow = true;
+    if(lampLights.length > 4 && Math.floor(time)%2 === 0){ // make changes in every 2 seconds
+
+        if (camera.position.x > 57){
+            for(let i = 0; i<lampLights.length/2; i++){
+                lampLights[i].castShadow = true;
+            }
+            for(let i = lampLights.length/2; i<lampLights.length; i++){
+                lampLights[i].castShadow = false;
+            }
         }
+
+        else if (camera.position.x < 57){
+            for(let i = 0; i<lampLights.length/2; i++){
+                lampLights[i].castShadow = false;
+            }
+            for(let i = lampLights.length/2; i<lampLights.length; i++){
+                lampLights[i].castShadow = true;
+            }
+        }
+
     }
 
-    let nearest1 = lampLights[0];
-    let nearest2 = lampLights[1];
-    let nearest3 = lampLights[2];
-    let nearest4 = lampLights[3];
-
-    for(let i = 4; i<lampLights.length;i++){
-        if(distanceFromCamera(nearest1) > distanceFromCamera(lampLights[i])){
-            nearest1 = lampLights[i];
-
-        }
-    }
 }
 
 
@@ -59,31 +65,13 @@ export function flashlightController(){
     spotLight.position.z = camera.position.z;
 
     spotLight.target = obj;
-
-
     /*console.log(spotLight.position);*/
 }
 
 
 
 
-
-
-function distanceFromCamera(light){
-    return light.position.distanceToSquared(camera.position);
-}
-
-
 document.addEventListener("keydown", event => {
-
-    if (event.code === 'KeyQ') {
-        if(mainLight.parent === scene){
-            scene.remove(mainLight);
-        }
-        else{
-            scene.add(mainLight);
-        }
-    }
 
     if (event.code === 'KeyF') {
 

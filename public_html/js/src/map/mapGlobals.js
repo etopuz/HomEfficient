@@ -29,7 +29,6 @@ export const
         Door: "Door",
         PossiblePath: "PossiblePath",
         Path: "Path",
-        Removed: "Removed"
     },
 
     RoomType = {

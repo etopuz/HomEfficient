@@ -1,5 +1,5 @@
 import {GLTFLoader} from "../../modules/GLTFLoader.js";
-import {materials, renderer, scene} from "../../globals.js";
+import {ceil, materials, renderer, scene} from "../../globals.js";
 import * as THREE from "../../modules/three.module.js";
 import {DoorDirection, RoomType} from "../map/mapGlobals.js";
 import {_3DModel} from "./_3DModel.js";
@@ -25,13 +25,6 @@ let numberOfBathrooms = 0;
 let numberOfKitchens = 0;
 let numberOfBedrooms = 0;
 
-
-
-let delay = 1
-
-
-
-
 export function setupScene(bsp){
 
     tiles = bsp.tiles;
@@ -44,14 +37,14 @@ export function setupScene(bsp){
     calculateNumberOfRooms();
 
     loadGltfMesh(lampObj, numberOfRooms);
-    loadGltfMesh(tvObj, numberOfRooms);
+    loadGltfMesh(tvObj, numberOfLivingRoom);
     loadGltfMesh(switchObj, numberOfRooms);
 
     sleep(3000).then(r => {
         setupSwitches();
         setupLights();
         setupTvS();
-        //addCeil();
+        addCeil();
     });
 
 
@@ -130,24 +123,24 @@ function setupSwitches() {
                 break;
         }
 
-        createObject(switchObj.models[i], 0.002, rotation , position, {type:switchObj.name, id:i});
+        createObject(switchObj.models[i], 0.001, rotation , position, {type:switchObj.name, id:i});
     }
 }
 
 
 function setupLights(){
+
+    let shadow = nodes.length < 5;
     for(let i = 0; i< nodes.length; i++) {
         let room = nodes[i].room;
         let middleTile = tiles[Math.floor((room.endX + room.startX)/2)][Math.floor((room.endZ + room.startZ)/2)];
         let position = new THREE.Vector3(middleTile.position.x, 4, middleTile.position.z);
         createObject(lampObj.models[i], 0.05, zeroVector , position, i);
-        if(i<4){ // TODO TUM ISIKLAR ICIN AYARLANACAK
-            let light = new THREE.PointLight(0xFFFFFF, 1.0, 36, 2);
-            light.position.set(position.x, position.y - 0.5, position.z);
-            light.castShadow = true;
-            scene.add(light);
-            lampLights.push(light);
-        }
+        let light = new THREE.PointLight(0xFFFFFF, 1.0, 36, 1.5);
+        light.position.set(position.x, position.y - 0.5, position.z);
+        light.castShadow = shadow;
+        scene.add(light);
+        lampLights.push(light);
 
     }
 }
@@ -183,6 +176,7 @@ function setupTvS() {
                 let middleTile = tiles[Math.floor((room.endX + room.startX)/2)][room.endZ-1];
                 position = middleTile.position.clone();
                 position.z -= 1;
+                rotation.y = Math.PI;
             }
 
             else if(room.doorDirection===DoorDirection.Down){
@@ -205,11 +199,9 @@ function addCeil() {
     let middlePos = endPos.add(startPos);
     middlePos = middlePos.multiplyScalar(0.5);
     middlePos.y += 3;
-    let ceil = new THREE.Mesh(new THREE.BoxGeometry(2,2,2), materials.white);
     ceil.position.set(middlePos.x, middlePos.y, middlePos.z);
     ceil.scale.set(numberOfTilesOnEdge, 1 , numberOfTilesOnEdge);
     scene.add(ceil);
-
 }
 
 function calculateNumberOfRooms() {

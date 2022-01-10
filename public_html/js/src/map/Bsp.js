@@ -28,6 +28,7 @@ export class Bsp{
         this.numberOfTilesOnEdge = chunkSize * Math.pow(2,split);
         this.root = new _Node(0, this.numberOfTilesOnEdge, 0, this.numberOfTilesOnEdge, NodeType.Root);
         this.generateAll(); // TODO: will run after get input
+        console.log(this.numberOfTilesOnEdge);
     }
 
     generateAll(){          // TODO: will run after get input

@@ -12,7 +12,7 @@ export class Room{
     }
 
     setDoorPos(){
-        switch (this. doorDirection){
+        switch (this.doorDirection){
             case DoorDirection.Up:
                 this.doorPosX = this.startX+1;
                 this.doorPosZ = this.startZ;
