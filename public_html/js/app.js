@@ -3,17 +3,19 @@ import {cameraController, setGodMode, stopMotion} from "./src/controls/character
 import {Bsp} from "./src/map/Bsp.js";
 import {animationController, isAnimationStopped} from "./src/map/BspAnimation.js";
 import {clock, isCollisionSet, setCollision, updatePhysics} from "./src/controls/collisionDetectionController.js";
-import {rayCastInit} from "./src/controls/raycastController.js";
+import {initRaycast} from "./src/controls/raycastController.js";
 import {setupScene, isSceneLoaded, isSceneLoadCalled} from "./src/game/loadObjectsOnScene.js";
-import {flashlightController, manageShadows} from "./src/game/lightManager.js";
+import {flashlightController, manageShadows} from "./src/controls/lightController.js";
 import {isShadersInitialized, initShaders, setTileProperties} from "./src/shaderManagement/shaderManager.js";
+import {initTransformControls} from "./src/controls/objectTransformationController.js";
 
 let bsp;
 let split = 2;  // increase this for more nodes
 let delay = 1; // increase this for better animation
 let time = 0;
 
-rayCastInit();
+initRaycast();
+initTransformControls();
 
 window.onload = function(){
     scene.add(controls.getObject());
@@ -21,10 +23,13 @@ window.onload = function(){
     setCamera();
 
     bsp = new Bsp(split);
+
     animationController(bsp, delay);
     setTileProperties(bsp);
-    animate();
 
+
+
+    animate();
 }
 
 function animate() {

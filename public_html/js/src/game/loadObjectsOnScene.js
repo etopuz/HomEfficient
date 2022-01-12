@@ -3,14 +3,20 @@ import {ceil, materials, renderer, scene} from "../../globals.js";
 import * as THREE from "../../modules/three.module.js";
 import {DoorDirection, RoomType} from "../map/mapGlobals.js";
 import {_3DModel} from "./_3DModel.js";
-import {lampLights} from "./lightManager.js";
+import {lampLights} from "../controls/lightController.js";
 
 
 const zeroVector = new THREE.Vector3(0,0,0);
 
 let lampObj = new _3DModel('lamp', 'assets/gltf//lamp/');
-let tvObj = new _3DModel('tv', 'assets/gltf//tv2/');
 let switchObj = new _3DModel('switch', 'assets/gltf//switch/');
+
+let tvObj = new _3DModel('tv', 'assets/gltf//tv2/');
+let sofaObj = new _3DModel('sofa', 'assets/gltf//sofa2/');
+let coffeeTableObj = new _3DModel('coffeeTable', 'assets/gltf//coffee_table/');
+let cupObj = new _3DModel('cup', 'assets/gltf//cup/');
+let teaPotObj = new _3DModel('teaPot', 'assets/gltf//teapot2/');
+let plateObj = new _3DModel('plate', 'assets/gltf//plate/');
 
 let tiles;
 let nodes;
@@ -25,6 +31,8 @@ let numberOfBathrooms = 0;
 let numberOfKitchens = 0;
 let numberOfBedrooms = 0;
 
+
+
 export function setupScene(bsp){
 
     tiles = bsp.tiles;
@@ -36,14 +44,22 @@ export function setupScene(bsp){
 
     calculateNumberOfRooms();
 
-    loadGltfMesh(lampObj, numberOfRooms);
-    loadGltfMesh(tvObj, numberOfLivingRoom);
+    // ALL ROOMS
     loadGltfMesh(switchObj, numberOfRooms);
+    loadGltfMesh(lampObj, numberOfRooms);
+
+    // LIVING ROOM
+    loadGltfMesh(sofaObj, numberOfLivingRoom * 2);
+    loadGltfMesh(tvObj, numberOfLivingRoom);
+    loadGltfMesh(coffeeTableObj, numberOfLivingRoom);
+    loadGltfMesh(cupObj, numberOfLivingRoom);
+    loadGltfMesh(teaPotObj, numberOfLivingRoom);
+    loadGltfMesh(plateObj, numberOfLivingRoom);
 
     sleep(3000).then(r => {
+        setupLivingRoom();
         setupSwitches();
         setupLights();
-        setupTvS();
         addCeil();
     });
 
@@ -55,6 +71,8 @@ export function setupScene(bsp){
     */
 
 }
+
+
 
 function createObject(object3D, scaleRatio, rotation, position, id){
 
@@ -75,7 +93,7 @@ function createObject(object3D, scaleRatio, rotation, position, id){
 
 
 function loadGltfMesh(model, howMany) {
-
+    console.log(model);
     let path = model.path;
     let object3DArray = model.models;
 
@@ -90,7 +108,7 @@ function loadGltfMesh(model, howMany) {
     } , function(xhr){
         console.log((xhr.loaded/xhr.total *100)+ "% loaded");
     } , function (error){
-        console.log("An error occured")
+        console.log("An error occurred!")
     });
 }
 
@@ -145,47 +163,135 @@ function setupLights(){
     }
 }
 
-function setupTvS() {
+function setupLivingRoom() {
 
     let j = -1;
     for(let i = 0; i< nodes.length; i++) {
         let room = nodes[i].room;
-        if(room.roomType===RoomType.LivingRoom) {
+        if(room.roomType === RoomType.LivingRoom) {
             j++;
 
-            let ceil = 0;
-            let scaleRatio = 0.007
-            let position = new THREE.Vector3(0,0,0);
-            let rotation = new THREE.Vector3(0,0,0);
+            let leftMid = tiles[room.startX][Math.floor((room.endZ + room.startZ)/2)].position;
+            let rightMid = tiles[room.endX-1][Math.floor((room.endZ + room.startZ)/2)].position;
+            let topMid = tiles[Math.floor((room.endX + room.startX)/2)][room.startZ].position;
+            let downMid = tiles[Math.floor((room.endX + room.startX)/2)][room.endZ-1].position;
+            let mid = tiles[Math.floor((room.endX + room.startX)/2)][Math.floor((room.endZ + room.startZ)/2)].position;
+
+            let tvScale = 0.005;
+            let sofaScale = 0.04;
+            let coffeeTableScale = 0.8;
+            let cupScale = 0.0008;
+            let teaPotScale = 0.15;
+            let plateScale = 0.08;
+
+            let tvOffset = 2;
+            let sofaOffset = 3.5;
+            let coffeeTableOffSet = 1.1;
+
+            let tvPosition = new THREE.Vector3(0,0,0);
+            let tvRotation = new THREE.Vector3(0,0,0);
+
+            let sofaPosition1 = new THREE.Vector3(0,0,0);
+            let sofaRotation1 = new THREE.Vector3(0,0,0);
+
+            let sofaPosition2 = new THREE.Vector3(0,0,0);
+            let sofaRotation2 = new THREE.Vector3(0,0,0);
+
+            let coffeeTablePosition = mid.clone();
+            let coffeeTableRotation = new THREE.Vector3(0,0,0);
+
+            let cupPosition = new THREE.Vector3(0,0,0);
+            let teaPotPosition = new THREE.Vector3(0,0,0);
+            let platePosition = new THREE.Vector3(0,0,0);
 
             if(room.doorDirection===DoorDirection.Right){
-                let middleTile = tiles[room.startX][Math.floor((room.endZ + room.startZ)/2)];
-                position = middleTile.position.clone();
-                position.x +=1;
-                rotation.y = Math.PI/2;
+                tvPosition = leftMid.clone();
+                tvPosition.x += tvOffset;
+                tvRotation.y = Math.PI/2;
+
+                sofaPosition1 = downMid.clone();
+                sofaPosition1.z -= sofaOffset;
+                sofaRotation1.y = Math.PI;
+
+                sofaPosition2 = rightMid.clone();
+                sofaPosition2.x -= sofaOffset;
+                sofaRotation2.y = -Math.PI/2;
+
+                coffeeTablePosition.x += coffeeTableOffSet
+                coffeeTableRotation.y = Math.PI/2;
             }
 
             else if(room.doorDirection===DoorDirection.Left){
-                let middleTile = tiles[room.endX-1][Math.floor((room.endZ + room.startZ)/2)];
-                position = middleTile.position.clone();
-                position.x -=1;
-                rotation.y = -Math.PI/2;
+                tvPosition = rightMid.clone();
+                tvPosition.x -= tvOffset;
+                tvRotation.y = -Math.PI/2;
+
+                sofaPosition1 = topMid.clone();
+                sofaPosition1.z += sofaOffset;
+
+                sofaPosition2 = leftMid.clone();
+                sofaPosition2.x += sofaOffset;
+                sofaRotation2.y = Math.PI/2;
+
+                coffeeTablePosition.x -= coffeeTableOffSet
+                coffeeTableRotation.y = Math.PI/2;
+
             }
 
             else if(room.doorDirection===DoorDirection.Up){
-                let middleTile = tiles[Math.floor((room.endX + room.startX)/2)][room.endZ-1];
-                position = middleTile.position.clone();
-                position.z -= 1;
-                rotation.y = Math.PI;
+                tvPosition = downMid.clone();
+                tvPosition.z -= tvOffset;
+                tvRotation.y = Math.PI;
+
+                sofaPosition1 = rightMid.clone();
+                sofaPosition1.x -= sofaOffset;
+                sofaRotation1.y = -Math.PI/2;
+
+                sofaPosition2 = topMid.clone();
+                sofaPosition2.z += sofaOffset;
+
+                coffeeTablePosition.z -= coffeeTableOffSet
+
             }
 
             else if(room.doorDirection===DoorDirection.Down){
-                let middleTile = tiles[Math.floor((room.endX + room.startX)/2)][room.startZ];
-                position = middleTile.position.clone();
-                position.z += 1;
+                tvPosition = topMid.clone();
+                tvPosition.z += tvOffset;
+
+                sofaPosition1 = leftMid.clone();
+                sofaPosition1.x += sofaOffset;
+                sofaRotation1.y = Math.PI/2;
+
+                sofaPosition2 = downMid.clone();
+                sofaPosition2.z -= sofaOffset;
+                sofaRotation2.y = Math.PI;
+
+                coffeeTablePosition.z += coffeeTableOffSet
             }
 
-            createObject(tvObj.models[j], scaleRatio, rotation, position, tvObj.name+j);
+            tvPosition.y -= 0.5;
+
+            sofaPosition1.y = 0;
+            sofaPosition2.y = 0;
+
+            coffeeTablePosition.y += 1.2;
+
+            cupPosition = coffeeTablePosition.clone();
+            cupPosition.y += 0.2;
+
+            teaPotPosition = cupPosition.clone();
+            teaPotPosition.x += 0.2
+
+            platePosition = cupPosition.clone();
+            platePosition.x -= 0.6;
+
+            createObject(plateObj.models[j], plateScale, new THREE.Vector3(0,0,0), platePosition, {type:'movable', id:i});
+            createObject(teaPotObj.models[j], teaPotScale, new THREE.Vector3(0,0,0), teaPotPosition, {type:'movable', id:i});
+            createObject(cupObj.models[j], cupScale, new THREE.Vector3(0,0,0), cupPosition, {type:'movable', id:i});
+            createObject(coffeeTableObj.models[j], coffeeTableScale, coffeeTableRotation, coffeeTablePosition, coffeeTableObj.name + j);
+            createObject(tvObj.models[j], tvScale, tvRotation, tvPosition, tvObj.name + j);
+            createObject(sofaObj.models[j], sofaScale, sofaRotation2, sofaPosition2, sofaObj.name + j);
+            createObject(sofaObj.models[j + numberOfLivingRoom], sofaScale, sofaRotation1, sofaPosition1, sofaObj.name + (j + numberOfLivingRoom));
             // add rect area light
 
         }
@@ -201,6 +307,7 @@ function addCeil() {
     middlePos.y += 3;
     ceil.position.set(middlePos.x, middlePos.y, middlePos.z);
     ceil.scale.set(numberOfTilesOnEdge, 1 , numberOfTilesOnEdge);
+    ceil.visible = false; // TODO : DELETE THIS LINE
     scene.add(ceil);
 }
 

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Table Texture Wood
+* source:	https://sketchfab.com/3d-models/table-texture-wood-79d70872b4334b7190fb2ed40f8de598
+* author:	Dimas.Achmad.Nugraha (https://sketchfab.com/Dimas.Achmad.Nugraha)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Table Texture Wood" (https://sketchfab.com/3d-models/table-texture-wood-79d70872b4334b7190fb2ed40f8de598) by Dimas.Achmad.Nugraha (https://sketchfab.com/Dimas.Achmad.Nugraha) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

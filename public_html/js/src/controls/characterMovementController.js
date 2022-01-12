@@ -1,5 +1,6 @@
 import * as THREE from "../../modules/three.module.js";
 import {camera, character, controls, player, renderer} from "../../globals.js";
+import {isEditMode} from "./objectTransformationController.js";
 
 export let
     moveLeftVector = new THREE.Vector3(),
@@ -87,9 +88,6 @@ const _onKeyDown = function ( event ) {
             break;
 
     }
-
-
-
 };
 
 const _onKeyUp = function ( event ) {
@@ -115,6 +113,7 @@ const _onKeyUp = function ( event ) {
             break;
 
         case 'ControlLeft':
+        case 'KeyZ':
             _moveDown = false;
             break;
 
@@ -167,6 +166,7 @@ export function cameraController(){
         camera.position.z += (moveForwardVector.z + moveLeftVector.z) * delta * 5;
     }
 
+
     _prevTime = time;
 }
 
@@ -182,8 +182,12 @@ export function stopMotion(){
 
 document.addEventListener( 'keydown', _onKeyDown );
 document.addEventListener( 'keyup', _onKeyUp );
-document.addEventListener( 'click', function () {controls.lock();} );
 window.addEventListener('resize', _onWindowResize, false);
+document.addEventListener( 'click', function () {
+    if(!isEditMode)
+        controls.lock();
+} );
+
 
 function setCharacterPosition(){
     camera.position.x = character.position.x;

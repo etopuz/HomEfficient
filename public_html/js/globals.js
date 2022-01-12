@@ -29,7 +29,9 @@ export const
         kitchen: new THREE.MeshPhongMaterial( { map: checkersTexture, shininess: 15}),
         livingRoom: new THREE.MeshPhongMaterial( { map: woodFloorTexture, shininess: 10}),
         corridor: new THREE.MeshPhongMaterial( { map: checkersTexture, shininess: 15 }),
-        wall: new THREE.MeshPhongMaterial({map: wallTexture, shininess: 2})
+        wall: new THREE.MeshPhongMaterial({map: wallTexture, shininess: 2}),
+
+        highlight : new THREE.MeshPhongMaterial( { color: 0x992222})
 
     };
 
@@ -38,7 +40,7 @@ export let
     renderer = new THREE.WebGLRenderer({precision: "mediump", antialias: true }),
     camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 300),
     character = new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.25, player.height, 32)),
-    spotLight = new THREE.SpotLight(0xFFFFFF, 1.0, 40, 0.60, 0.5, 1.5),
+    spotLight = new THREE.SpotLight(0xFFFFFF, 1.0, 40, 1.0, 1.0, 1.5),
     ceil = new THREE.Mesh(new THREE.BoxGeometry(2,2,2), materials.wall);
 
 

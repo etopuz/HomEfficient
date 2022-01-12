@@ -8,7 +8,7 @@ import {VST} from "../../../shaders/2_vertexShaderToon.js";
 import {FST} from "../../../shaders/2_fragmentShaderToon.js";
 import {FSG} from "../../../shaders/1_fragmentShaderGouraud.js";
 import {VSG} from "../../../shaders/1_vertexShaderGouraud.js";
-import {lampLights} from "../game/lightManager.js";
+import {lampLights} from "../controls/lightController.js";
 
 
 export let isShadersInitialized = false;

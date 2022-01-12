@@ -1,0 +1,11 @@
+Model Information:
+* title:	Teapot 2 (draft)
+* source:	https://sketchfab.com/3d-models/teapot-2-draft-9a8e3464238c484f9f88df75a52a3b53
+* author:	MrsM (https://sketchfab.com/MrsM)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Teapot 2 (draft)" (https://sketchfab.com/3d-models/teapot-2-draft-9a8e3464238c484f9f88df75a52a3b53) by MrsM (https://sketchfab.com/MrsM) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

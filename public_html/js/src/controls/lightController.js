@@ -29,19 +29,19 @@ export function manageShadows(time){
 
         if (camera.position.x > 57){
             for(let i = 0; i<lampLights.length/2; i++){
-                lampLights[i].castShadow = true;
+                lampLights[i].castShadow = false;
             }
             for(let i = lampLights.length/2; i<lampLights.length; i++){
-                lampLights[i].castShadow = false;
+                lampLights[i].castShadow = true;
             }
         }
 
         else if (camera.position.x < 57){
             for(let i = 0; i<lampLights.length/2; i++){
-                lampLights[i].castShadow = false;
+                lampLights[i].castShadow = true;
             }
             for(let i = lampLights.length/2; i<lampLights.length; i++){
-                lampLights[i].castShadow = true;
+                lampLights[i].castShadow = false;
             }
         }
 
