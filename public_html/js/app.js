@@ -12,7 +12,7 @@ import {initUI, isGamePaused, isGameStarted, isGameEnd, split, mapVariables} fro
 import {initScore} from "./src/game/ScoreManager.js";
 
 let bsp;
-let delay = 500;  // increase this for better animation
+let delay = 550;  // increase this for better animation
 let time = 0;
 
 

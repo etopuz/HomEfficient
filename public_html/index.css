@@ -25,7 +25,11 @@ body {
 }
 
 #Score {
-    background-color: rgba(1, 1, 1, 0) !important;
+    background-color: rgba(1, 1, 1, 0.3) !important;
+    -webkit-border-radius: 13px;
+    -moz-border-radius: 13px;
+    border-radius: 13px;
+    padding : 0 26px;
     position: absolute;
     right: 3%;
     top: 3%;
