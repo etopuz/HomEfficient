@@ -1,6 +1,7 @@
 import * as THREE from "../../modules/three.module.js";
 import {camera, character, controls, player, renderer} from "../../globals.js";
 import {isEditMode} from "./objectTransformationController.js";
+import {isGameStarted, isGamePaused, isGameEnd} from "../game/UI_Handler.js";
 
 export let
     moveLeftVector = new THREE.Vector3(),
@@ -184,7 +185,7 @@ document.addEventListener( 'keydown', _onKeyDown );
 document.addEventListener( 'keyup', _onKeyUp );
 window.addEventListener('resize', _onWindowResize, false);
 document.addEventListener( 'click', function () {
-    if(!isEditMode)
+    if(!isEditMode && isGameStarted && !isGamePaused && !isGameEnd)
         controls.lock();
 } );
 

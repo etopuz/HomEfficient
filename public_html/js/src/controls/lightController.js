@@ -1,5 +1,6 @@
 import {scene, camera, spotLight} from "../../globals.js";
 import * as THREE from "../../modules/three.module.js";
+import {increaseScore} from "../game/ScoreManager.js";
 
 export let
     lampLights = [],
@@ -15,6 +16,9 @@ scene.add(obj);
 
 
 export function turnOffLights(i){
+    if(lampLights[i].intensity !== 0){
+        increaseScore();
+    }
     lampLights[i].intensity = 0;
 }
 

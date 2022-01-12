@@ -25,7 +25,7 @@ let middle;
 let tiles;
 let nodes;
 
-export function setTileProperties(bsp){
+export function setTilesForShading(bsp){
     tiles = bsp.tiles;
     middle = bsp.numberOfTilesOnEdge;
     nodes = bsp.leaveNodes;

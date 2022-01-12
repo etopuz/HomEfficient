@@ -93,7 +93,6 @@ function createObject(object3D, scaleRatio, rotation, position, id){
 
 
 function loadGltfMesh(model, howMany) {
-    console.log(model);
     let path = model.path;
     let object3DArray = model.models;
 

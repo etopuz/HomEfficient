@@ -45,6 +45,7 @@ export let
 
 
 document.body.appendChild(renderer.domElement);
+renderer.domElement.id = 'canvas';
 
 scene.add(character);
 character.position.set(7,2,7);
@@ -68,3 +69,4 @@ export const
         let keys = Object.keys(obj);
         return obj[keys[ keys.length * Math.random() << 0]];
     };
+

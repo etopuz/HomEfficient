@@ -6,36 +6,56 @@ import {clock, isCollisionSet, setCollision, updatePhysics} from "./src/controls
 import {initRaycast} from "./src/controls/raycastController.js";
 import {setupScene, isSceneLoaded, isSceneLoadCalled} from "./src/game/loadObjectsOnScene.js";
 import {flashlightController, manageShadows} from "./src/controls/lightController.js";
-import {isShadersInitialized, initShaders, setTileProperties} from "./src/shaderManagement/shaderManager.js";
+import {isShadersInitialized, initShaders, setTilesForShading} from "./src/shaderManagement/shaderManager.js";
 import {initTransformControls} from "./src/controls/objectTransformationController.js";
+import {initUI, isGamePaused, isGameStarted, isGameEnd, split, mapVariables} from "./src/game/UI_Handler.js";
+import {initScore} from "./src/game/ScoreManager.js";
 
 let bsp;
-let split = 2;  // increase this for more nodes
-let delay = 1; // increase this for better animation
+let delay = 500;  // increase this for better animation
 let time = 0;
 
+
+initUI();
 initRaycast();
 initTransformControls();
 
+
 window.onload = function(){
+
     scene.add(controls.getObject());
     setRenderer();
     setCamera();
 
-    bsp = new Bsp(split);
+    waitForStart();
 
-    animationController(bsp, delay);
-    setTileProperties(bsp);
-
-
-
-    animate();
 }
 
+
+function waitForStart(){
+
+    if(isGameStarted) {
+        bsp = new Bsp(split, mapVariables);
+        camera.position.set(bsp.numberOfTilesOnEdge, 50, bsp.numberOfTilesOnEdge);
+        camera.lookAt(bsp.numberOfTilesOnEdge,0,0);
+        animationController(bsp, delay);
+        initScore(bsp.leaveNodes.length);
+        setTilesForShading(bsp);
+        animate();
+    }
+
+    else{
+        requestAnimationFrame(waitForStart);
+    }
+}
+
+
 function animate() {
+
     if(controls.isLocked && window.document.hasFocus()){
         cameraController();
     }
+
     TWEEN.update();
     renderer.render( scene, camera );
 
@@ -49,33 +69,39 @@ function animate() {
 
     else
         requestAnimationFrame(animate);
+
 }
 
 function game(){
+
+    if(!isGamePaused && !isGameEnd){
+        let deltaTime = clock.getDelta();
+
+        if(!isSceneLoadCalled){
+            setupScene(bsp);
+        }
+
+        if(!isShadersInitialized){
+            initShaders();
+        }
+
+        if(controls.isLocked && window.document.hasFocus()){
+            manageShadows(time);
+            cameraController();
+            updatePhysics(deltaTime);
+            flashlightController();
+        }
+
+        else {
+            stopMotion();
+        }
+
+        time += deltaTime;
+        renderer.render( scene, camera);
+    }
+
     requestAnimationFrame(game);
-    let deltaTime = clock.getDelta();
 
-    if(!isSceneLoadCalled){
-        setupScene(bsp);
-    }
-
-    if(!isShadersInitialized){
-        initShaders();
-    }
-
-    if(controls.isLocked && window.document.hasFocus()){
-        manageShadows(time);
-        cameraController();
-        updatePhysics(deltaTime);
-        flashlightController();
-    }
-
-    else {
-        stopMotion();
-    }
-
-    time += deltaTime;
-    renderer.render( scene, camera);
 }
 
 function setRenderer() {

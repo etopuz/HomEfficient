@@ -4,22 +4,91 @@
 	<head>
 		<meta charset="utf-8">
 		<title>HomEfficient</title>
-        <style>
-            body {
-                overflow: hidden;
-                margin: 0;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-            }
-        </style>
+		<link rel="stylesheet" href="index.css">
+                <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 	</head>
 
+
 	<body>
+
+		<div id ="Score" hidden> Score: 0</div>
+		<div id ="WinScreen" hidden> You Win! ^_^ </div>
+
+		<p id="controlContext" hidden> WASD, Arrows -> Move
+			<br> Space -> Move Up (Works in God Mode)
+			<br> Ctrl, Z -> Move Down (Works in God Mode)
+			<br> Q -> Change Shaders
+			<br> P -> Pause / Resume
+			<br> F2 -> God Mode (Free move)
+			<br> E -> Edit Mode (Should look movable objects)
+			<br> R -> Rotate Mode (Works in Edit Mode)
+                        <br> Y -> Scale Mode (Works in Edit Mode)
+			<br> T -> Translate Mode (Works in Edit Mode)
+			<br> MouseClick 1 -> Interact With Objects
+		</p>
+
+		<button id ="nextgame" class="btn" >Next Game</button>
+		<button id ="controls" class="btn" >Controls</button>
+
+		<button id ="resume" class="btn" disabled hidden>Resume</button>
+		<button id ="start" class="btn" disabled hidden>Start</button>
+		<button id ="setRandom" class="btn" disabled hidden>Set Random</button>
+
+		<div class = "difficulty">
+			<button id ="easy" class="btn" disabled hidden> Easy </button>
+			<button id ="medium" class="btn" disabled hidden> Medium </button>
+			<button id ="hard" class="btn" disabled hidden> Hard </button>
+		</div>
+
+		<div class="custom-select" style="width:200px;" id="pickRoomType" hidden>
+				<select class="select-selected" name = "inner">
+					<option value="0">Select room:</option>
+					<option value="0">Living Room</option>
+					<option value="1">Kitchen</option>
+					<option value="2">Bathroom</option>
+					<option value="3">Bedroom</option>
+				</select>
+		</div>
+
+		<div class="custom-select" style="width:200px;" id="pickDoorPosition" hidden>
+			<select class="select-selected" name = "inner">
+				<option value="0">Door Position:</option>
+				<option value="0">Left</option>
+				<option value="1">Right</option>
+				<option value="2">Up</option>
+				<option value="3">Down</option>
+			</select>
+		</div>
+
+		<div class="custom-select" style="width:200px;" id="offSetX" hidden>
+			<select class="select-selected" name = "inner">
+				<option value="0">Offset X:</option>
+				<option value="0">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</select>
+		</div>
+
+		<div class="custom-select" style="width:200px;" id="offSetZ" hidden>
+			<select class="select-selected" name = "inner">
+				<option value="0">Offset Y:</option>
+				<option value="0">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+			</select>
+		</div>
+
+		<script type="module" src="./js/modules/jquery-3.6.0.min.js"></script>
 		<script type="module" src="./js/app.js"></script>
 		<script type="module" src="./js/modules/tween.umd.js"></script>
 		<script src="./js/modules/ammo.js"></script>
+
 	</body>
 
 </html>

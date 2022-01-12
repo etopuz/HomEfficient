@@ -1,7 +1,6 @@
 import * as THREE from "../../modules/three.module.js";
 import {camera, scene} from "../../globals.js";
 import {turnOffLights} from "./lightController.js";
-import {highlight} from "../game/highlightObjects.js";
 
 let rayCaster = new THREE.Raycaster();
 let rayCaster2 = new THREE.Raycaster();

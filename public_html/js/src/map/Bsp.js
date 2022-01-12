@@ -22,13 +22,13 @@ export class Bsp{
     tilePositions = [];
     leaveNodes = [];
 
-    constructor(split) {
+    constructor(split, mapVariables) {
+        this.mapVariables = mapVariables;
         this.isAnimationStopped = true;
         this.split = split;
         this.numberOfTilesOnEdge = chunkSize * Math.pow(2,split);
         this.root = new _Node(0, this.numberOfTilesOnEdge, 0, this.numberOfTilesOnEdge, NodeType.Root);
         this.generateAll(); // TODO: will run after get input
-        console.log(this.numberOfTilesOnEdge);
     }
 
     generateAll(){          // TODO: will run after get input
@@ -128,6 +128,7 @@ export class Bsp{
             return;
 
         // get values below as input
+
         let offsetX = 0;
         let offsetZ = 0;
         let roomType = randomProperty(RoomType);
@@ -135,6 +136,15 @@ export class Bsp{
         let doorDirection = randomProperty(DoorDirection);
 
         if(node.isLeaf()){
+
+            if (!this.mapVariables.setRandom){
+                offsetX = this.mapVariables.offSetXQueue.shift();
+                offsetZ = this.mapVariables.offSetZQueue.shift();
+                roomType = this.mapVariables.roomTypesQueue.shift();
+                doorDirection = this.mapVariables.doorDirectionsQueue.shift();
+                console.log(roomType);
+            }
+
             node.setRoom(offsetX,offsetZ, roomType, doorDirection);
             let room = node.room;
 
