@@ -306,7 +306,6 @@ function addCeil() {
     middlePos.y += 3;
     ceil.position.set(middlePos.x, middlePos.y, middlePos.z);
     ceil.scale.set(numberOfTilesOnEdge, 1 , numberOfTilesOnEdge);
-    ceil.visible = false; // TODO : DELETE THIS LINE
     scene.add(ceil);
 }
 
